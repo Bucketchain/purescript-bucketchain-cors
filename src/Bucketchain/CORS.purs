@@ -29,7 +29,7 @@ import Foreign.Object (lookup)
 -- | The type of `Access-Control-Allow-Origin`.
 data AllowOrigins
   = AnyOrigin
-  | Hosts (Array String)
+  | Origins (Array String)
 
 -- | The type of `Access-Control-Allow-Credentials`.
 type AllowCredentials = Boolean
@@ -99,7 +99,7 @@ withCORS opts next = do
 
 setAllowOrigin :: Http -> AllowOrigins -> String -> Effect Unit
 setAllowOrigin http AnyOrigin _ = setHeader http "Access-Control-Allow-Origin" "*"
-setAllowOrigin http (Hosts origins) reqOrigin =
+setAllowOrigin http (Origins origins) reqOrigin =
   when (elem reqOrigin origins) $ setHeader http "Access-Control-Allow-Origin" reqOrigin
 
 setAllowCredentials :: Http -> AllowCredentials -> Effect Unit

@@ -28,7 +28,7 @@ opts =
 
 middleware1 :: Middleware
 middleware1 = withCORS defaultOptions
-  { origins = Hosts [ "http://localhost:3000", "http://localhost:3001" ]
+  { origins = Origins [ "http://localhost:3000", "http://localhost:3001" ]
   , credentials = true
   , exposeHeaders = [ "X-Foo", "X-Bar" ]
   }
