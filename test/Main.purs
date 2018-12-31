@@ -57,7 +57,7 @@ testPreflight = do
     assert $ body == ""
     assert $ C.statusCode res == 204
     let hs = C.responseHeaders res
-    assert $ lookup "access-control-allow-origin" hs == Just "localhost:3000"
+    assert $ lookup "access-control-allow-origin" hs == Just "http://localhost:3000"
     assert $ lookup "access-control-allow-credentials" hs == Just "true"
     assert $ lookup "access-control-max-age" hs == Just "1728000"
     assert $ lookup "access-control-allow-methods" hs == Just "GET, HEAD, PUT, POST, DELETE, PATCH"
@@ -68,7 +68,7 @@ testPreflight = do
         <> C.path := "/test"
         <> C.headers := headers
     headers = C.RequestHeaders $ fromFoldable
-      [ Tuple "Origin" "localhost:3000"
+      [ Tuple "Origin" "http://localhost:3000"
       , Tuple "Access-Control-Request-Headers" "X-Foo, X-Bar"
       ]
 
@@ -79,7 +79,7 @@ testNotPreflight = do
   liftEffect do
     assert $ body == "Hello world."
     let hs = C.responseHeaders res
-    assert $ lookup "access-control-allow-origin" hs == Just "localhost:3000"
+    assert $ lookup "access-control-allow-origin" hs == Just "http://localhost:3000"
     assert $ lookup "access-control-allow-credentials" hs == Just "true"
     assert $ lookup "access-control-expose-headers" hs == Just "X-Foo, X-Bar"
   where
@@ -88,6 +88,6 @@ testNotPreflight = do
         <> C.path := "/test"
         <> C.headers := headers
     headers = C.RequestHeaders $ fromFoldable
-      [ Tuple "Origin" "localhost:3000"
+      [ Tuple "Origin" "http://localhost:3000"
       , Tuple "Access-Control-Request-Headers" "X-Foo"
       ]
