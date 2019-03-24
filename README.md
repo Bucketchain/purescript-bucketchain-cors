@@ -6,8 +6,16 @@ A CORS middleware of [Bucketchain](https://github.com/Bucketchain/purescript-buc
 
 ## Installation
 
+### Bower
+
 ```
-bower install purescript-bucketchain-cors
+$ bower install purescript-bucketchain-cors
+```
+
+### Spago
+
+```
+$ spago install bucketchain-cors
 ```
 
 ## Documentation
