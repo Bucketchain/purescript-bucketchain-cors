@@ -20,8 +20,10 @@ import Data.Array (length)
 import Data.Either (Either(..))
 import Data.Foldable (elem)
 import Data.HTTP.Method (Method(..), fromString)
+import Data.Int (ceil)
 import Data.Maybe (Maybe(..))
 import Data.String (joinWith)
+import Data.Time.Duration (Seconds(..))
 import Effect (Effect)
 import Effect.Class (liftEffect)
 import Foreign.Object (lookup)
@@ -34,8 +36,8 @@ data AllowOrigins
 -- | The type of `Access-Control-Allow-Credentials`.
 type AllowCredentials = Boolean
 
--- | The type of `Access-Control-Max-Age`. it's seconds.
-type MaxAge = Int
+-- | The type of `Access-Control-Max-Age`.
+type MaxAge = Seconds
 
 -- | The type of `Access-Control-Allow-Methods`.
 type AllowMethods = Array Method
@@ -70,7 +72,7 @@ defaultOptions :: Options
 defaultOptions =
   { origins: AnyOrigin
   , credentials: false
-  , maxAge: 1728000
+  , maxAge: Seconds 1728000.0
   , methods: [ GET, HEAD, PUT, POST, DELETE, PATCH ]
   , allowHeaders: AnyHeader
   , exposeHeaders: []
@@ -107,7 +109,7 @@ setAllowCredentials http true = setHeader http "Access-Control-Allow-Credentials
 setAllowCredentials _ _ = pure unit
 
 setMaxAge :: Http -> MaxAge -> Effect Unit
-setMaxAge http x = setHeader http "Access-Control-Max-Age" $ show x
+setMaxAge http (Seconds sec) = setHeader http "Access-Control-Max-Age" $ show (ceil sec)
 
 setAllowMethods :: Http -> AllowMethods -> Effect Unit
 setAllowMethods http methods =
